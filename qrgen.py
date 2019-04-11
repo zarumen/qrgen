@@ -4,7 +4,7 @@ Dependencies: PIL or pillow (I use pillow), qrcode
 """
 
 import qrcode
-import sys
+import os, sys
 import argparse
 from PIL import Image, ImageEnhance
 
@@ -72,16 +72,16 @@ if __name__ == "__main__":
     mark = None
     if args.overlay not in (None, ''):
         try:
-            print "Opening overlay file {0}".format(args.overlay)
+            print ("Opening overlay file {0}".format(args.overlay))
             mark = Image.open(args.overlay)
         except Exception as x:
-            print "Note: Couldn't open overlay {0}, is it a PNG?" % args.overlay, x
+            print ("Note: Couldn't open overlay {0}, is it a PNG?" % args.overlay, x)
 
     for line in args.text:
         # Accept stdin lines
         line = line.strip()
 
-        print "Generating QR for {0}...".format(line),
+        print ("Generating QR for {0}...".format(line)),
         try:
 
             img = do_qr("{0}{1}{2}".format(args.prefix, line, args.suffix),
@@ -98,10 +98,12 @@ if __name__ == "__main__":
 
                 # Write out image
                 img.save(filename)
+                os.rename(f'./{filename}', f'./output/{filename}')
+
             except Exception as x:
-                print "!!! Could not save %s!" % filename, x
+                print ("!!! Could not save %s!" % filename, x)
             else:
-                print "saved as {0}".format(filename)
+                print ("saved as {0}".format(filename))
         except Exception as x:
-            print "ERROR while generating '%s':" % line, x
-    print "Done!"
+            print ("ERROR while generating '%s':" % line, x)
+    print ("Done!")
