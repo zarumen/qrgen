@@ -23,7 +23,7 @@ def do_qr(text, mark=None, box_size=10, border=4, fileext="png"):
     img = qr.make_image()
 
     if mark is not None:
-        overpos = img.size[0] / 2 - mark.size[0] / 2
+        overpos = int((img.size[0] / 2) - (mark.size[0] / 2))
         img = watermark(img, mark, (overpos, overpos))
 
     return img
